@@ -10,15 +10,18 @@ import com.squareup.picasso.Picasso
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.main.AsteroidAdapter
 import com.udacity.asteroidradar.models.Asteroid
+import com.udacity.asteroidradar.models.PictureOfDay
 
 @BindingAdapter("statusIcon")
 fun bindAsteroidStatusImage(imageView: ImageView, isHazardous: Boolean) {
     if (isHazardous) {
         imageView.setImageResource(R.drawable.ic_status_potentially_hazardous)
-        imageView.contentDescription = imageView.resources.getString(R.string.potentially_hazardous_asteroid_image)
+        imageView.contentDescription =
+            imageView.resources.getString(R.string.potentially_hazardous_asteroid_image)
     } else {
         imageView.setImageResource(R.drawable.ic_status_normal)
-        imageView.contentDescription = imageView.resources.getString(R.string.not_hazardous_asteroid_image)
+        imageView.contentDescription =
+            imageView.resources.getString(R.string.not_hazardous_asteroid_image)
     }
 }
 
@@ -26,10 +29,12 @@ fun bindAsteroidStatusImage(imageView: ImageView, isHazardous: Boolean) {
 fun bindDetailsStatusImage(imageView: ImageView, isHazardous: Boolean) {
     if (isHazardous) {
         imageView.setImageResource(R.drawable.asteroid_hazardous)
-        imageView.contentDescription = imageView.resources.getString(R.string.potentially_hazardous_asteroid_image)
+        imageView.contentDescription =
+            imageView.resources.getString(R.string.potentially_hazardous_asteroid_image)
     } else {
         imageView.setImageResource(R.drawable.asteroid_safe)
-        imageView.contentDescription = imageView.resources.getString(R.string.not_hazardous_asteroid_image)
+        imageView.contentDescription =
+            imageView.resources.getString(R.string.not_hazardous_asteroid_image)
     }
 }
 
@@ -52,13 +57,17 @@ fun bindTextViewToDisplayVelocity(textView: TextView, number: Double) {
 }
 
 @BindingAdapter("imageUrl")
-fun bindImage(imgView: ImageView, imgUrl: String?) {
-    imgUrl?.let {
-        val imgUri = imgUrl.toUri().buildUpon().scheme("https").build()
-        Picasso.get()
-            .load(imgUri)
-            .placeholder(R.drawable.placeholder_picture_of_day)
-            .into(imgView)
+fun bindImage(imgView: ImageView, pictureOfDay: PictureOfDay?) {
+    pictureOfDay?.let {
+        if (it.mediaType == "image") {
+            val imgUri = it.url.toUri().buildUpon().scheme("https").build()
+            Picasso.get()
+                .load(imgUri)
+                .placeholder(R.drawable.placeholder_picture_of_day)
+                .into(imgView)
+        } else {
+            imgView.setImageResource(R.drawable.placeholder_picture_of_day)
+        }
     }
 }
 
